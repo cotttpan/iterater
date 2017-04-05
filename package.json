@@ -1,0 +1,60 @@
+{
+  "name": "iterater",
+  "description": "iterater",
+  "version": "0.0.1",
+  "author": "cotto",
+  "ava": {
+    "files": [
+      "./test/compiled/**/*.test.js"
+    ],
+    "verbose": true,
+    "babel": "inherit"
+  },
+  "bugs": {
+    "url": "https://github.com/cotttpan/iterater/issues"
+  },
+  "dependencies": {
+    "@types/node": "^7.0.12"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.40",
+    "@types/power-assert": "^1.4.29",
+    "@types/sinon": "^2.1.2",
+    "ava": "^0.18.2",
+    "espower-typescript": "^8.0.0",
+    "mocha": "^3.2.0",
+    "npm-run-all": "^4.0.2",
+    "power-assert": "^1.4.2",
+    "rimraf": "^2.6.1",
+    "sinon": "^2.1.0",
+    "tslint": "^5.0.0",
+    "typescript": "^2.2.2"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENCE"
+  ],
+  "keywords": [
+    "iterator"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cotttpan/iterater"
+  },
+  "scripts": {
+    "build": "npm-run-all build:*",
+    "build:dist": "tsc",
+    "build:test": "tsc -p test",
+    "clean": "run-p clean:**",
+    "clean:dist": "rimraf ./dist",
+    "clean:test": "rimraf ./test/compiled",
+    "lint": "tslint src/**/*.ts",
+    "start": "tsc -w",
+    "test": "NODE_ENV=test npm-run-all clean:test build:test -p 'build:test -- -w' 'test:ava -- -w'",
+    "test:ava": "ava -w"
+  },
+  "types": "dist/index.d.ts"
+}
