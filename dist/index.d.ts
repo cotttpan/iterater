@@ -12,12 +12,10 @@ declare namespace iterate {
     function reduce<T, R1, R2>(iterable: Iterable<T>, fn: Reducer<R1, T>, init: R1, tick: Tick<R1, R2>, done?: Done<R2, R2>): R2 | undefined;
     function reduce<T, R>(iterable: Iterable<T>, fn: Reducer<R, T>, init: R, tick?: Tick<R, R>, done?: Done<R, R>): R | undefined;
 }
-export declare namespace _ {
-    function identity<T>(value: T): T;
-    function existy(v: any): boolean;
-    function constant<T>(value: T): () => T;
-    function tick<T>(next: Function, callbackResult: T | Promise<T>): any;
-}
+export declare function identity<T>(value: T): T;
+export declare function existy(v: any): boolean;
+export declare function constant<T>(value: T): () => T;
+export declare function tick<T>(next: Function, callbackResult: T | Promise<T>): any;
 export interface Reducer<T, U> {
     (acc: T, value: U, index: number, src: Iterable<U>): T;
 }

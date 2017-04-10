@@ -1,5 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const _ = {
+    identity,
+    existy,
+    constant,
+    tick
+};
 function iterate(iterable, pipe, tick = _.tick, done = _.identity) {
     const iterator = iterable[Symbol.iterator]();
     let index = -1;
@@ -42,27 +48,25 @@ exports.iterate = iterate;
     iterate.reduce = reduce;
 })(iterate || (iterate = {}));
 exports.iterate = iterate;
-var _;
-(function (_) {
-    function identity(value) {
-        return value;
+/* Utils */
+function identity(value) {
+    return value;
+}
+exports.identity = identity;
+function existy(v) {
+    return !(v === null || v === undefined);
+}
+exports.existy = existy;
+function constant(value) {
+    return () => value;
+}
+exports.constant = constant;
+function tick(next, callbackResult) {
+    if (callbackResult && typeof callbackResult.then === 'function') {
+        return callbackResult.then(x => next(x));
     }
-    _.identity = identity;
-    function existy(v) {
-        return !(v === null || v === undefined);
-    }
-    _.existy = existy;
-    function constant(value) {
-        return () => value;
-    }
-    _.constant = constant;
-    function tick(next, callbackResult) {
-        if (callbackResult && typeof callbackResult.then === 'function') {
-            return callbackResult.then(x => next(x));
-        }
-        return next(callbackResult);
-    }
-    _.tick = tick;
-})(_ = exports._ || (exports._ = {}));
+    return next(callbackResult);
+}
+exports.tick = tick;
 exports.default = iterate;
 //# sourceMappingURL=index.js.map
