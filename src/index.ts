@@ -1,3 +1,10 @@
+const _ = {
+    identity,
+    existy,
+    constant,
+    tick
+};
+
 function iterate<T, R1, R2, R3>(iterable: Iterable<T>, pipe: Pipe<T, R1>, tick: Tick<R1, R2>, done: Done<R2, R3>): R3 | undefined;
 function iterate<T, R1, R2>(iterable: Iterable<T>, pipe: Pipe<T, R1>, tick: Tick<R1, R2>, done?: Done<R2, R2>): R2 | undefined;
 function iterate<T, R1>(iterable: Iterable<T>, pipe: Pipe<T, R1>, tick?: Tick<R1, R1>, done?: Done<R1, R1>): R1 | undefined;
@@ -55,24 +62,25 @@ namespace iterate {
     }
 }
 
-export namespace _ {
-    export function identity<T>(value: T) {
-        return value;
+/* Utils */
+export function identity<T>(value: T) {
+    return value;
+}
+export function existy(v: any) {
+    return !(v === null || v === undefined);
+}
+export function constant<T>(value: T) {
+    return () => value;
+}
+export function tick<T>(next: Function, callbackResult: T | Promise<T>) {
+    if (callbackResult && typeof (callbackResult as any).then === 'function') {
+        return (callbackResult as Promise<any>).then(x => next(x));
     }
-    export function existy(v: any) {
-        return !(v === null || v === undefined);
-    }
-    export function constant<T>(value: T) {
-        return () => value;
-    }
-    export function tick<T>(next: Function, callbackResult: T | Promise<T>) {
-        if (callbackResult && typeof (callbackResult as any).then === 'function') {
-            return (callbackResult as Promise<any>).then(x => next(x));
-        }
-        return next(callbackResult);
-    }
+    return next(callbackResult);
 }
 
+
+/* Types */
 export interface Reducer<T, U> {
     (acc: T, value: U, index: number, src: Iterable<U>): T;
 }
